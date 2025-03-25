@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +15,7 @@ import useDispatches from "@/hooks/useDispatches";
 
 const SignIn = () => {
   const { dispatchUser } = useDispatches();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -26,6 +28,8 @@ const SignIn = () => {
         password,
       });
       dispatchUser(response.data.customer);
+      localStorage.setItem("token", response.data.token);
+      navigate(`/user-profile/${response.data.customer.id}`);
     } catch (error) {
       console.log(error);
     }

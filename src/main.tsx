@@ -11,7 +11,7 @@ import "./index.css";
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_SERVER_URL ?? "";
 
 axios.interceptors.request.use((request) => {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
   if (token) {
     request.headers.Authorization = token;
   }

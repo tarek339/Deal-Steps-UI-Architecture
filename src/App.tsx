@@ -1,7 +1,14 @@
 import { Route, Routes } from "react-router";
 
 import { NavBar } from "./components/ui/shared";
-import { Products, SignIn, SignUp, VerifyEmail } from "./views";
+import {
+  AccountSecurity,
+  Products,
+  SignIn,
+  SignUp,
+  UserProfile,
+  VerifyEmail,
+} from "./views";
 
 function App() {
   return (
@@ -12,6 +19,8 @@ function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/user-profile/:id" element={<UserProfile />} />
+        <Route path="/account-security/:id" element={<AccountSecurity />} />
       </Routes>
     </>
   );
