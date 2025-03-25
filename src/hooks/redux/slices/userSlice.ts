@@ -5,6 +5,7 @@ import { InitialUserState } from "@/types/interfaces/slices";
 
 const initialState: InitialUserState = {
   user: null,
+  loading: true,
 };
 
 const userSlice = createSlice({
@@ -13,9 +14,11 @@ const userSlice = createSlice({
   reducers: {
     addUser: (state, action: PayloadAction<UserProps>) => {
       state.user = action.payload;
+      state.loading = false;
     },
     removeUser: (state) => {
       state.user = null;
+      state.loading = false;
     },
   },
 });

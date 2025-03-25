@@ -52,3 +52,13 @@ export default tseslint.config({
   },
 });
 ```
+
+useEffect(() => {
+if (!user && !userLoading) {
+navigate("/");
+}
+}, [navigate, user, userLoading]);
+
+    if (userLoading) {
+      return null;
+    }

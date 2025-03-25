@@ -4,6 +4,7 @@ export interface UserProps {
   lastName: string;
   email: string;
   password: string;
+  isVerified: boolean;
   address: {
     city: string;
     street: string;
