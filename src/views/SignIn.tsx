@@ -9,9 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/utils";
+import { Input } from "@/components/ui/shared";
+import useDispatches from "@/hooks/useDispatches";
 
 const SignIn = () => {
+  const { dispatchUser } = useDispatches();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -22,7 +25,7 @@ const SignIn = () => {
         email,
         password,
       });
-      console.log(response.data);
+      dispatchUser(response.data.customer);
     } catch (error) {
       console.log(error);
     }
