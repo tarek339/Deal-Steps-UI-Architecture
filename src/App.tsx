@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router";
 
-import { NavBar } from "./utils";
+import { NavBar } from "./components/ui/shared";
 import { Products, SignIn, SignUp, VerifyEmail } from "./views";
 
 function App() {
