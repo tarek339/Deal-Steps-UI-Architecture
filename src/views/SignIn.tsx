@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/shared";
+import withAuthRestrictions from "@/hoc/withAuthRestriction";
 import useDispatches from "@/hooks/useDispatches";
 
 const SignIn = () => {
@@ -64,4 +65,5 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+const RestrictedSignIn = withAuthRestrictions(SignIn);
+export default RestrictedSignIn;
