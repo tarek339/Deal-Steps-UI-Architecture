@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { Button } from "@/components/ui/button";
@@ -12,15 +12,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import withRestrictions from "@/hoc/withRestrictions";
 import useDispatches from "@/hooks/useDispatches";
-import useRequests from "@/hooks/useRequests";
 import useSelectors from "@/hooks/useSelectors";
 
 const UserProfile = () => {
   const { user } = useSelectors();
   const { id } = useParams();
   const { dispatchUser } = useDispatches();
-  const { fetchUser } = useRequests();
   const navigate = useNavigate();
 
   const [firstName, setFirstName] = useState("");
@@ -29,10 +28,6 @@ const UserProfile = () => {
   const [houseNumber, setHouseNumber] = useState("");
   const [street, setStreet] = useState("");
   const [zipCode, setZipCode] = useState("");
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +51,7 @@ const UserProfile = () => {
       <Card>
         <CardHeader>
           <CardTitle>
-            {user?.firstName && `Hello,${user?.firstName} ${user?.lastName}`}
+            {user?.firstName && `Hello, ${user?.firstName} ${user?.lastName}`}
           </CardTitle>
           <CardDescription>
             {!user?.firstName
@@ -118,4 +113,5 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+const RestrictedUserProfile = withRestrictions(UserProfile);
+export default RestrictedUserProfile;

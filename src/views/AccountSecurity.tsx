@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 
 import { Button } from "@/components/ui/button";
@@ -11,12 +11,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import useRequests from "@/hooks/useRequests";
+import withRestrictions from "@/hoc/withRestrictions";
 import useSelectors from "@/hooks/useSelectors";
 
 const AccountSecurity = () => {
   const { user } = useSelectors();
-  const { fetchUser } = useRequests();
   const { id } = useParams();
 
   const [email, setEmail] = useState("");
@@ -58,10 +57,6 @@ const AccountSecurity = () => {
       console.log(error);
     }
   };
-
-  useEffect(() => {
-    fetchUser();
-  }, []);
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-4">
@@ -127,4 +122,5 @@ const AccountSecurity = () => {
   );
 };
 
-export default AccountSecurity;
+const RestrictedAccountSecurity = withRestrictions(AccountSecurity);
+export default RestrictedAccountSecurity;
