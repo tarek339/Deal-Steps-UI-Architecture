@@ -11,12 +11,15 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Form, Input } from "@/components/ui/shared";
+import { Toaster } from "@/components/ui/toaster";
 import withRestrictions from "@/hoc/withRestrictions";
+import { useToast } from "@/hooks/use-toast";
 import useSelectors from "@/hooks/useSelectors";
 
 const AccountSecurity = () => {
   const { user } = useSelectors();
   const { id } = useParams();
+  const { toast } = useToast();
 
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
@@ -53,7 +56,15 @@ const AccountSecurity = () => {
           confirmEmail,
         },
       );
-      console.log(response.data.message);
+      if (response.status === 200) {
+        toast({
+          variant: "default",
+          title: "Email updated",
+          description: "Check your email for the confirmation link",
+        });
+        setEmail("");
+        setConfirmEmail("");
+      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setEmailError(error.response.data.message);
@@ -89,7 +100,16 @@ const AccountSecurity = () => {
           confirmPassword,
         },
       );
-      console.log(response.data.message);
+      if (response.status === 200) {
+        toast({
+          variant: "default",
+          title: "Password updated",
+          description: "Your password has been updated",
+        });
+        setPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setPasswordError(error.response.data.message);
@@ -99,6 +119,7 @@ const AccountSecurity = () => {
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-4">
+      <Toaster />
       <Card>
         <CardHeader>
           <CardTitle>Email settings</CardTitle>
