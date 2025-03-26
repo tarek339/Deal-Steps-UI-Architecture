@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/shared";
+import { Form, Input } from "@/components/ui/shared";
 import withAuthRestrictions from "@/hoc/withAuthRestriction";
 import useDispatches from "@/hooks/useDispatches";
 
@@ -20,19 +20,36 @@ const SignIn = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      if (!email) {
+        setEmailError("Please enter email");
+        return;
+      }
+      if (!password) {
+        setPasswordError("Please enter password");
+        return;
+      }
+
       const response = await axios.post("customer/sign_in_customer", {
         email,
         password,
       });
+
       dispatchUser(response.data.customer);
       localStorage.setItem("token", response.data.token);
       navigate(`/user-profile/${response.data.customer.id}`);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response) {
+        setPasswordError("Invalid email or password");
+      }
+      if (axios.isAxiosError(error) && error.response) {
+        setEmailError("Invalid email or password");
+      }
     }
   };
 
@@ -44,21 +61,29 @@ const SignIn = () => {
           <CardDescription>Enter your email and password</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Form onSubmit={handleSubmit}>
             <Input
               type={"text"}
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError("");
+              }}
+              error={emailError}
             />
             <Input
               type={"password"}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError("");
+              }}
+              error={passwordError}
             />
             <Button type="submit">Submit</Button>
-          </form>
+          </Form>
         </CardContent>
       </Card>
     </div>

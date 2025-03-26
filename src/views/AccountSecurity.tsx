@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { Form, Input } from "@/components/ui/shared";
 import withRestrictions from "@/hoc/withRestrictions";
 import useSelectors from "@/hooks/useSelectors";
 
@@ -24,10 +24,28 @@ const AccountSecurity = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [emailError, setEmailError] = useState("");
+  const [confirmEmailError, setConfirmEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [newPasswordError, setNewPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     try {
+      if (!email) {
+        setEmailError("Email is required");
+        return;
+      }
+      if (!confirmEmail) {
+        setConfirmEmailError("Confirm email is required");
+        return;
+      }
+      if (email !== confirmEmail) {
+        setEmailError("Emails do not match");
+        setConfirmEmailError("Emails do not match");
+        return;
+      }
       const response = await axios.put(
         `customer/change_costumers_email/${id}`,
         {
@@ -37,13 +55,32 @@ const AccountSecurity = () => {
       );
       console.log(response.data.message);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response) {
+        setEmailError(error.response.data.message);
+      }
     }
   };
 
   const handleSubmitPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      if (!password) {
+        setPasswordError("Password is required");
+        return;
+      }
+      if (!newPassword) {
+        setNewPasswordError("New password is required");
+        return;
+      }
+      if (!confirmPassword) {
+        setConfirmPasswordError("Confirm password is required");
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        setNewPasswordError("Passwords do not match");
+        setConfirmPasswordError("Passwords do not match");
+        return;
+      }
       const response = await axios.put(
         `customer/change_costumers_password/${id}`,
         {
@@ -54,7 +91,9 @@ const AccountSecurity = () => {
       );
       console.log(response.data.message);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response) {
+        setPasswordError(error.response.data.message);
+      }
     }
   };
 
@@ -69,21 +108,31 @@ const AccountSecurity = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Form onSubmit={handleSubmit}>
             <Input
               type={"text"}
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError("");
+                setConfirmEmailError("");
+              }}
+              error={emailError}
             />
             <Input
               type={"text"}
               placeholder="Confirm Email"
               value={confirmEmail}
-              onChange={(e) => setConfirmEmail(e.target.value)}
+              onChange={(e) => {
+                setConfirmEmail(e.target.value);
+                setConfirmEmailError("");
+                setEmailError("");
+              }}
+              error={confirmEmailError}
             />
             <Button type="submit">Submit</Button>
-          </form>
+          </Form>
         </CardContent>
       </Card>
 
@@ -95,27 +144,41 @@ const AccountSecurity = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmitPassword} className="flex flex-col gap-4">
+          <Form onSubmit={handleSubmitPassword} className="flex flex-col gap-4">
             <Input
               type={"password"}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError("");
+              }}
+              error={passwordError}
             />
             <Input
               type={"password"}
               placeholder="New Password"
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e) => {
+                setNewPassword(e.target.value);
+                setNewPasswordError("");
+                setConfirmPasswordError("");
+              }}
+              error={newPasswordError || confirmPasswordError}
             />
             <Input
               type={"password"}
               placeholder="Confirm Password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setConfirmPasswordError("");
+                setNewPasswordError("");
+              }}
+              error={confirmPasswordError}
             />
             <Button type="submit">Submit</Button>
-          </form>
+          </Form>
         </CardContent>
       </Card>
     </div>

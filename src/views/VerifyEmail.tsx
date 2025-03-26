@@ -12,9 +12,7 @@ const VerifyEmail = () => {
         token: search.get("token"),
       });
       navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   }, [search, navigate]);
   return null;
 };
