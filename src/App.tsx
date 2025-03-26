@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router";
 
 import { NavBar } from "./components/ui/shared";
+import { Toaster } from "./components/ui/toaster";
 import useRequests from "./hooks/useRequests";
-import useSelectors from "./hooks/useSelectors";
 import {
   AccountSecurity,
   NotFound,
@@ -15,21 +15,16 @@ import {
 } from "./views";
 
 function App() {
-  const { user, userLoading } = useSelectors();
   const { fetchUser } = useRequests();
 
   useEffect(() => {
     fetchUser();
   }, []);
 
-  useEffect(() => {
-    console.log(userLoading);
-    console.log(user);
-  }, [user, userLoading]);
   return (
     <>
       <NavBar />
-
+      <Toaster />
       <Routes>
         <Route path="/" element={<Products />} />
         <Route path="/user-profile/:id" element={<UserProfile />} />

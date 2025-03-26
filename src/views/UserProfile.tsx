@@ -12,7 +12,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Form, Input, Modal } from "@/components/ui/shared";
+import { Toaster } from "@/components/ui/toaster";
 import withRestrictions from "@/hoc/withRestrictions";
+import { useToast } from "@/hooks/use-toast";
 import useDispatches from "@/hooks/useDispatches";
 import useSelectors from "@/hooks/useSelectors";
 
@@ -21,6 +23,7 @@ const UserProfile = () => {
   const { id } = useParams();
   const { dispatchUser } = useDispatches();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -72,7 +75,18 @@ const UserProfile = () => {
         zipCode,
       });
       dispatchUser(response.data.customer);
-    } catch (error) {}
+      toast({
+        variant: "default",
+        title: "Profile updated",
+        description: "Your profile has been updated",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `Something went wrong - ${(error as Error).message}`,
+      });
+    }
   };
 
   const onDelete = async () => {
@@ -81,11 +95,18 @@ const UserProfile = () => {
       localStorage.removeItem("token");
       console.log(response);
       navigate("/");
-    } catch (error) {}
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `Something went wrong - ${(error as Error).message}`,
+      });
+    }
   };
 
   return (
     <div className="mx-auto max-w-md">
+      <Toaster />
       <Card>
         <CardHeader>
           <CardTitle>
