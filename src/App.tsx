@@ -5,8 +5,8 @@ import { NavBar } from "./components/ui/shared";
 import useRequests from "./hooks/useRequests";
 import {
   AccountSecurity,
+  Home,
   NotFound,
-  Products,
   SignIn,
   SignUp,
   UserProfile,
@@ -24,7 +24,7 @@ function App() {
     <>
       <NavBar />
       <Routes>
-        <Route path="/" element={<Products />} />
+        <Route path="/" element={<Home />} />
         <Route path="/user-profile/:id" element={<UserProfile />} />
         <Route path="/account-security/:id" element={<AccountSecurity />} />
 
