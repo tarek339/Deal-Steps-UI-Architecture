@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -20,6 +20,7 @@ const AccountSecurity = () => {
   const { user } = useSelectors();
   const { id } = useParams();
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
@@ -207,6 +208,14 @@ const AccountSecurity = () => {
           </Form>
         </CardContent>
       </Card>
+      <div className="flex justify-start pl-2">
+        <Button
+          variant="destructive"
+          onClick={() => navigate(`/user-profile/${id}`)}
+        >
+          Back
+        </Button>
+      </div>
     </div>
   );
 };

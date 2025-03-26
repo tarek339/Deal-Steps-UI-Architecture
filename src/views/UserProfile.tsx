@@ -110,7 +110,9 @@ const UserProfile = () => {
       <Card>
         <CardHeader>
           <CardTitle>
-            {user?.firstName && `Hello, ${user?.firstName} ${user?.lastName}`}
+            {user?.firstName
+              ? `Hello, ${user?.firstName} ${user?.lastName}`
+              : "Hello, User"}
           </CardTitle>
           <CardDescription>
             {!user?.firstName
@@ -186,7 +188,7 @@ const UserProfile = () => {
 
         <CardFooter className="flex items-center justify-between">
           <Button
-            variant={"secondary"}
+            variant={"warning"}
             onClick={() => navigate(`/account-security/${id}`)}
           >
             Account security
