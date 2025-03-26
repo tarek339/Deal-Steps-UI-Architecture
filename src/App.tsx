@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { Route, Routes } from "react-router";
 
 import { NavBar } from "./components/ui/shared";
-import { Toaster } from "./components/ui/toaster";
 import useRequests from "./hooks/useRequests";
 import {
   AccountSecurity,
@@ -24,7 +23,6 @@ function App() {
   return (
     <>
       <NavBar />
-      <Toaster />
       <Routes>
         <Route path="/" element={<Products />} />
         <Route path="/user-profile/:id" element={<UserProfile />} />
