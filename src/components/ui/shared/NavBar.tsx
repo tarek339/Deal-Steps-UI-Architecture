@@ -1,3 +1,4 @@
+import { CircleUserRound } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import {
@@ -22,7 +23,9 @@ const NavBar = () => {
 
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger className="cursor-pointer">Account</MenubarTrigger>
+          <MenubarTrigger className="cursor-pointer">
+            <CircleUserRound />
+          </MenubarTrigger>
           <MenubarContent>
             {user ? (
               <>
