@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/shared";
+import { Form, Input } from "@/components/ui/shared";
 import withAuthRestrictions from "@/hoc/withAuthRestriction";
 import useDispatches from "@/hooks/useDispatches";
 
@@ -22,10 +22,38 @@ const SignUp = () => {
   const [confirmEmail, setConfirmEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setconfirmPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmEmailError, setConfirmEmailError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      if (!email) {
+        setEmailError("Please enter email");
+        return;
+      }
+      if (!confirmEmail) {
+        setConfirmEmailError("Please confirm email");
+        return;
+      }
+      if (email !== confirmEmail) {
+        setConfirmEmailError("Emails do not match");
+        return;
+      }
+      if (!password) {
+        setPasswordError("Please enter password");
+        return;
+      }
+      if (!confirmPassword) {
+        setConfirmPasswordError("Please confirm password");
+        return;
+      }
+      if (password !== confirmPassword) {
+        setConfirmPasswordError("Passwords do not match");
+        return;
+      }
       const response = await axios.post("customer/register_new_customer", {
         email,
         password,
@@ -34,7 +62,9 @@ const SignUp = () => {
       localStorage.setItem("token", response.data.token);
       navigate(`/user-profile/${response.data.customer.id}`);
     } catch (error) {
-      console.log(error);
+      if (axios.isAxiosError(error) && error.response) {
+        setEmailError(error.response.data.message);
+      }
     }
   };
 
@@ -46,33 +76,53 @@ const SignUp = () => {
           <CardDescription>Enter your data </CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Form onSubmit={handleSubmit}>
             <Input
               type={"text"}
               placeholder="Email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError("");
+                setConfirmEmailError("");
+              }}
+              error={emailError || confirmEmailError}
             />
             <Input
               type={"text"}
               placeholder="Confirm Email"
               value={confirmEmail}
-              onChange={(e) => setConfirmEmail(e.target.value)}
+              onChange={(e) => {
+                setConfirmEmail(e.target.value);
+                setConfirmEmailError("");
+                setEmailError("");
+              }}
+              error={confirmEmailError}
             />
             <Input
               type={"password"}
               placeholder="Password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError("");
+                setConfirmPasswordError("");
+              }}
+              error={passwordError || confirmPasswordError}
             />
             <Input
               type={"password"}
               placeholder="Confirm Password"
               value={confirmPassword}
-              onChange={(e) => setconfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setconfirmPassword(e.target.value);
+                setConfirmPasswordError("");
+                setPasswordError("");
+              }}
+              error={confirmPasswordError}
             />
             <Button type="submit">Submit</Button>
-          </form>
+          </Form>
         </CardContent>
       </Card>
     </div>

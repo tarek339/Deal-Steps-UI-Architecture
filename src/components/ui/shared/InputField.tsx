@@ -6,14 +6,18 @@ const InputField = ({
   value,
   placeholder,
   onChange,
+  error,
 }: InputFieldProps) => {
   return (
-    <Input
-      type={type}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-    />
+    <div>
+      <Input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+      {error && <span className="pl-1 text-sm text-red-500">{error}</span>}
+    </div>
   );
 };
 
