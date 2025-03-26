@@ -35,9 +35,14 @@ const AccountSecurity = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
       if (!email) {
         setEmailError("Email is required");
+        return;
+      }
+      if (!emailRegex.test(email)) {
+        setEmailError("Invalid type of email");
         return;
       }
       if (!confirmEmail) {
