@@ -12,13 +12,13 @@ import {
 
 import { ProductProps } from "@/types/interfaces/components";
 
-const Product = ({ title, description, price }: ProductProps) => {
+const Product = ({ title, description, price, image }: ProductProps) => {
   return (
     <Card className="w-screen max-w-sm">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>
-          <img src="https://fakeimg.pl/600x400" alt="" />
+          <img src={image} alt={title} />
         </CardDescription>
       </CardHeader>
       <CardContent>{description}</CardContent>
