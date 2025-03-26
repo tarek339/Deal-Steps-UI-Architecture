@@ -12,6 +12,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Modal } from "@/components/ui/shared";
 import withRestrictions from "@/hoc/withRestrictions";
 import useDispatches from "@/hooks/useDispatches";
 import useSelectors from "@/hooks/useSelectors";
@@ -41,6 +42,17 @@ const UserProfile = () => {
         zipCode,
       });
       dispatchUser(response.data.customer);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onDelete = async () => {
+    try {
+      const response = await axios.delete(`customer/delete_customer/${id}`);
+      localStorage.removeItem("token");
+      console.log(response);
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -100,13 +112,25 @@ const UserProfile = () => {
             <Button type="submit">Submit</Button>
           </form>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex items-center justify-between">
           <Button
             variant={"secondary"}
             onClick={() => navigate(`/account-security/${id}`)}
           >
             Account security
           </Button>
+          <Modal
+            tigger={"Delete account"}
+            title={"Are your sure you want to delete your account?"}
+            description={
+              "After deleting your account, you will not be able to recover it."
+            }
+            footer={
+              <Button variant={"destructive"} onClick={onDelete}>
+                Delete
+              </Button>
+            }
+          />
         </CardFooter>
       </Card>
     </div>

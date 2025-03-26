@@ -22,19 +22,27 @@ const NavBar = () => {
 
       <Menubar>
         <MenubarMenu>
-          <MenubarTrigger className="cursor-pointer">Profile</MenubarTrigger>
+          <MenubarTrigger className="cursor-pointer">Account</MenubarTrigger>
           <MenubarContent>
             {user ? (
-              <MenubarItem
-                className="cursor-pointer"
-                onClick={() => {
-                  localStorage.removeItem("token");
-                  existUser();
-                  navigate("/");
-                }}
-              >
-                Sign out
-              </MenubarItem>
+              <>
+                <MenubarItem
+                  className="cursor-pointer"
+                  onClick={() => navigate(`/user-profile/${user.id}`)}
+                >
+                  Profile
+                </MenubarItem>
+                <MenubarItem
+                  className="cursor-pointer"
+                  onClick={() => {
+                    localStorage.removeItem("token");
+                    existUser();
+                    navigate("/");
+                  }}
+                >
+                  Sign out
+                </MenubarItem>
+              </>
             ) : (
               <>
                 <MenubarItem

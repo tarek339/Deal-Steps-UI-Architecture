@@ -11,6 +11,7 @@
     "format": "prettier --write src public tailwind.config.ts --config .prettierrc && eslint 'src/**/*.{ts,tsx, js, jsx}' --fix"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-menubar": "^1.1.6",
     "@radix-ui/react-navigation-menu": "^1.2.5",
     "@radix-ui/react-slot": "^1.1.2",
