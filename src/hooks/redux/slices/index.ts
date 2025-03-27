@@ -1,3 +1,3 @@
-import { addUser, removeUser } from "./userSlice";
+import { addUser, removeUser, userReducer } from "./userSlice";
 
-export { addUser, removeUser };
+export { addUser, removeUser, userReducer };
