@@ -10,22 +10,22 @@ import {
   CardTitle,
 } from "../card";
 
-import { ProductProps } from "@/types/interfaces/components";
+import { ProductProps } from "@/types/interfaces/interfaces";
 
-const Product = ({ title, description, price, image }: ProductProps) => {
+const Product = ({ brand, description, imageUrl, price }: ProductProps) => {
   return (
-    <Card className="w-screen max-w-sm">
+    <Card className="h-full w-screen max-w-sm">
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{brand}</CardTitle>
         <CardDescription>
-          <img src={image} alt={title} />
+          <img src={imageUrl} alt={brand} />
         </CardDescription>
       </CardHeader>
-      <CardContent>{description}</CardContent>
-      <CardContent>
-        {price.toFixed(2).toString().replace(".", ",")} EUR
+      <CardContent className="flex flex-col justify-end gap-3">
+        <span>{description}</span>
+        <span>{price} EUR</span>
       </CardContent>
-      <CardFooter className="flex items-center justify-between">
+      <CardFooter className="flex w-full justify-between">
         <Button variant={"default"}>
           <Info />
         </Button>

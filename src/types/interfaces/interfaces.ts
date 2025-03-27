@@ -12,3 +12,12 @@ export interface UserProps {
     zipCode: string;
   };
 }
+
+export interface ProductProps {
+  id?: string;
+  brand: string;
+  description: string;
+  imageUrl: string;
+  price: string;
+  shopName?: string;
+}

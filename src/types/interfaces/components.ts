@@ -19,10 +19,3 @@ export interface ModalProps {
   description: string;
   footer: string | JSX.Element;
 }
-
-export interface ProductProps {
-  title: string;
-  image?: string;
-  description: string;
-  price: number;
-}
