@@ -21,7 +21,7 @@ import useSelectors from "@/hooks/useSelectors";
 const UserProfile = () => {
   const { user } = useSelectors();
   const { id } = useParams();
-  const { dispatchUser } = useDispatches();
+  const { dispatchUser, existUser } = useDispatches();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -93,7 +93,8 @@ const UserProfile = () => {
     try {
       const response = await axios.delete(`customer/delete_customer/${id}`);
       localStorage.removeItem("token");
-      console.log(response);
+      existUser();
+      console.log(response.data.message);
       navigate("/");
     } catch (error) {
       toast({
