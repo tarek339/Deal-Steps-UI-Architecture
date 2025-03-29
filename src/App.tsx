@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Route, Routes } from "react-router";
 
-import { NavBar } from "./components/ui/shared";
+import { Footer, NavBar } from "./components/ui/shared";
 import useRequests from "./hooks/useRequests";
 import {
   AccountSecurity,
@@ -37,6 +37,7 @@ function App() {
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      <Footer />
     </>
   );
 }

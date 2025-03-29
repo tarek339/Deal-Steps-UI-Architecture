@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
+import { Button } from "@/components/ui/button";
 import { Product } from "@/components/ui/shared";
 import useRequests from "@/hooks/useRequests";
 import useSelectors from "@/hooks/useSelectors";
@@ -11,9 +12,7 @@ const Home = () => {
   const { user } = useSelectors();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const [nextSlice, setNextSlice] = useState(10);
 
   const handleClick = async (id: string, productId: string) => {
     try {
@@ -26,19 +25,30 @@ const Home = () => {
     }
   };
 
+  const viewMore = () => {
+    setNextSlice(nextSlice + 10);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
-    <div className="flex w-full flex-wrap justify-center gap-6 p-5">
-      {products.map((product, i) => (
-        <Product
-          key={i}
-          brand={product.brand}
-          description={product.description}
-          imageUrl={product.imageUrl}
-          price={product.price}
-          addToCart={() => handleClick(user?.id ?? "", product.id ?? "")}
-          viewDetails={() => navigate(`/product-profile/${product.id}`)}
-        />
-      ))}
+    <div className="flex flex-col items-center gap-5 p-5">
+      <div className="flex w-full flex-wrap justify-center gap-6">
+        {products.slice(0, nextSlice).map((product, i) => (
+          <Product
+            key={i}
+            brand={product.brand}
+            description={product.description}
+            imageUrl={product.imageUrl}
+            price={product.price}
+            addToCart={() => handleClick(user?.id ?? "", product.id ?? "")}
+            viewDetails={() => navigate(`/product-profile/${product.id}`)}
+          />
+        ))}
+      </div>
+      <Button onClick={viewMore}>View More</Button>
     </div>
   );
 };
