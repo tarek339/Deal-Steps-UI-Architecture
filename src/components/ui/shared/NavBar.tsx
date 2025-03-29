@@ -1,4 +1,4 @@
-import { CircleUserRound } from "lucide-react";
+import { CircleUserRound, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router";
 
 import {
@@ -19,7 +19,9 @@ const NavBar = () => {
 
   return (
     <div className="mb-12 flex items-center justify-between bg-primary p-2 shadow-md">
-      <div>LOGO</div>
+      <div className="cursor-pointer" onClick={() => navigate("/")}>
+        LOGO
+      </div>
 
       <Menubar>
         <MenubarMenu>
@@ -65,6 +67,16 @@ const NavBar = () => {
             )}
           </MenubarContent>
         </MenubarMenu>
+        {user && (
+          <MenubarMenu>
+            <MenubarTrigger
+              className="cursor-pointer"
+              onClick={() => navigate(`/cart/${user?.id}`)}
+            >
+              <ShoppingCart />
+            </MenubarTrigger>
+          </MenubarMenu>
+        )}
       </Menubar>
     </div>
   );

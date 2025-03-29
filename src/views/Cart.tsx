@@ -11,8 +11,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, Trash2 } from "lucide-react";
+import axios from "axios";
+import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,61 +33,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Toggle } from "@/components/ui/toggle";
+import useRequests from "@/hooks/useRequests";
+import useSelectors from "@/hooks/useSelectors";
+import { CartProps } from "@/types/interfaces/interfaces";
 
-const data: Payment[] = [
-  {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
-  },
-  {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
-  },
-  {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
-  },
-  {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-  },
-  {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
-  },
-];
-
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-const checkedItems: Payment[] = [];
-export const columns: ColumnDef<Payment>[] = [
+const columns: ColumnDef<CartProps>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -94,33 +46,14 @@ export const columns: ColumnDef<Payment>[] = [
           table.getIsAllPageRowsSelected() ||
           (table.getIsSomePageRowsSelected() && "indeterminate")
         }
-        onCheckedChange={(value) => {
-          table.toggleAllPageRowsSelected(!!value);
-          if (value) {
-            checkedItems.push(
-              ...table.getRowModel().rows.map((row) => row.original),
-            );
-            localStorage.setItem("selectedItems", JSON.stringify(checkedItems));
-          } else {
-            checkedItems.splice(0, checkedItems.length);
-            localStorage.setItem("selectedItems", JSON.stringify(checkedItems));
-          }
-        }}
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
     ),
     cell: ({ row }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        onCheckedChange={(value) => {
-          row.toggleSelected(!!value);
-          checkedItems.push(row.original);
-          localStorage.setItem("selectedItems", JSON.stringify(checkedItems));
-          if (!value) {
-            checkedItems.splice(checkedItems.indexOf(row.original), 5);
-            localStorage.setItem("selectedItems", JSON.stringify(checkedItems));
-          }
-        }}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
         aria-label="Select row"
       />
     ),
@@ -128,59 +61,88 @@ export const columns: ColumnDef<Payment>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "status",
-    header: "Status",
+    accessorKey: "brand",
+    header: "Brand",
     cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
+      <div className="font-medium capitalize">{row.getValue("brand")}</div>
     ),
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown />
-        </Button>
-      );
+    accessorKey: "description",
+    header: () => {
+      return <div className="text-left font-medium">Description</div>;
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("description")}</div>
+    ),
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "quantity",
+    header: () => {
+      return <div className="font-medium">Quantity</div>;
+    },
+    cell: ({ row }) => (
+      <div className="lowercase">{row.getValue("quantity")}</div>
+    ),
+  },
+  {
+    accessorKey: "price",
+    header: () => <div>Price</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
+      const price = parseFloat(row.getValue("price"));
+      // Format the price as a dollar price
+      const formatted = new Intl.NumberFormat("de-DE", {
         style: "currency",
-        currency: "USD",
-      }).format(amount);
+        currency: "EUR",
+      }).format(price);
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return <div className="font-medium">{formatted}</div>;
     },
   },
   {
-    id: "actions",
-    enableHiding: false,
+    accessorKey: "totalPrice",
+    header: () => <div>Total</div>,
+    cell: ({ row }) => {
+      const total = parseFloat(row.getValue("totalPrice"));
+
+      // Format the total as a dollar total
+      const formattedTotal = new Intl.NumberFormat("de-DE", {
+        style: "currency",
+        currency: "EUR",
+      }).format(total);
+
+      return <div className="font-medium">{formattedTotal}</div>;
+    },
   },
 ];
 
 const Cart = () => {
+  const { fetchCart } = useRequests();
+  const { cart } = useSelectors();
+  const { id } = useParams();
+
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
-  const [selectedProducts, setSelectedProducts] = useState<Payment[]>([]);
-
+  const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  const [data, setData] = useState<CartProps[]>([]);
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 5,
   });
+
+  const onDelete = async () => {
+    try {
+      const response = await axios.post(`products/remove_from_cart/${id}`, {
+        selectedProducts,
+      });
+      console.log(response.data.message);
+      fetchCart(id ?? "");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const table = useReactTable({
     data,
@@ -205,18 +167,28 @@ const Cart = () => {
   });
 
   useEffect(() => {
-    const selectedItems = localStorage.getItem("selectedItems");
-    if (selectedItems) {
-      setSelectedProducts(JSON.parse(selectedItems));
-    }
+    setSelectedProducts(
+      table.getSelectedRowModel().rows.map((row) => row.original.id),
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [table.getSelectedRowModel()]);
+
+  useEffect(() => {
+    fetchCart(id ?? "");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    console.log(selectedProducts);
-    if (selectedProducts.length === 0) {
-      localStorage.removeItem("selectedItems");
-    }
-  }, [selectedProducts]);
+    const data = cart.map((item) => ({
+      id: item.id,
+      brand: item.brand,
+      description: item.description,
+      quantity: item.quantity,
+      price: item.price,
+      totalPrice: item.totalPrice,
+    }));
+    setData(data);
+  }, [cart]);
 
   return (
     <div className="flex w-full justify-center p-5">
@@ -228,7 +200,7 @@ const Cart = () => {
             </span>
             {table.getIsAllPageRowsSelected() ||
             table.getIsSomeRowsSelected() ? (
-              <Toggle className="hover:bg-red-600/10">
+              <Toggle className="hover:bg-red-600/10" onClick={onDelete}>
                 <Trash2 size={20} className="cursor-pointer text-red-600" />
               </Toggle>
             ) : null}
