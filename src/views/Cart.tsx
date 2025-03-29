@@ -253,11 +253,12 @@ const Cart = () => {
                     colSpan={columns.length}
                     className="h-24 text-center"
                   >
-                    Your cart is empty.
+                    Your cart is empty. Add some products to your cart.
                   </TableCell>
                 </TableRow>
               )}
               {pagination.pageSize >= table.getRowModel().rows?.length &&
+                table.getRowModel().rows?.length > 0 &&
                 Array.from({
                   length:
                     pagination.pageSize - table.getRowModel().rows?.length,
