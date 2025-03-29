@@ -10,9 +10,21 @@ import {
   CardTitle,
 } from "../card";
 
-import { ProductProps } from "@/types/interfaces/interfaces";
+export interface PorductCardProps {
+  brand: string;
+  description: string;
+  imageUrl: string;
+  price: string;
+  addToCart: React.MouseEventHandler<HTMLButtonElement> | undefined;
+}
 
-const Product = ({ brand, description, imageUrl, price }: ProductProps) => {
+const Product = ({
+  brand,
+  description,
+  imageUrl,
+  price,
+  addToCart,
+}: PorductCardProps) => {
   return (
     <Card className="h-full w-screen max-w-sm">
       <CardHeader>
@@ -29,7 +41,7 @@ const Product = ({ brand, description, imageUrl, price }: ProductProps) => {
         <Button variant={"default"}>
           <Info />
         </Button>
-        <Button variant={"success"}>
+        <Button onClick={addToCart} variant={"success"}>
           <ShoppingCart />
         </Button>
       </CardFooter>

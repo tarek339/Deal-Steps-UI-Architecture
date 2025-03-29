@@ -21,3 +21,12 @@ export interface ProductProps {
   price: string;
   shopName?: string;
 }
+
+export interface CartProps {
+  id: string;
+  brand: string;
+  description: string;
+  price: string | number;
+  totalPrice: string | number;
+  quantity: string;
+}

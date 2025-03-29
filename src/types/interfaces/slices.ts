@@ -1,4 +1,4 @@
-import { UserProps } from "./interfaces";
+import { CartProps, UserProps } from "./interfaces";
 
 export interface InitialUserState {
   user: UserProps | null;
@@ -7,4 +7,14 @@ export interface InitialUserState {
 
 export interface UserActionProps {
   user: UserProps;
+}
+
+export interface initalCartState {
+  cart: CartProps[];
+  total: number;
+}
+
+export interface CartActionProps {
+  cart: CartProps[];
+  total: number;
 }
