@@ -124,7 +124,7 @@ const AccountSecurity = () => {
   };
 
   return (
-    <div className="mx-auto flex max-w-md flex-col gap-4">
+    <div className="mx-auto flex max-w-md flex-col gap-5">
       <Toaster />
       <Card>
         <CardHeader>

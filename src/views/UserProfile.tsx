@@ -106,7 +106,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="mx-auto max-w-md">
+    <div className="m-auto w-full max-w-md p-5">
       <Toaster />
       <Card>
         <CardHeader>
