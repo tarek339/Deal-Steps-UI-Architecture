@@ -9,6 +9,8 @@ const Footer = () => {
           Made with ❤️ by{" "}
           <a
             href="https://github.com/tarek339?tab=repositories"
+            target="_blank"
+            rel="noreferrer"
             className="text-primary"
           >
             Tarek Jassine
