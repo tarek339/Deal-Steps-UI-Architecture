@@ -19,7 +19,7 @@ const NavBar = () => {
 
   return (
     <div className="mb-12 flex items-center justify-between bg-primary p-2 shadow-md">
-      <div className="cursor-pointer" onClick={() => navigate("/")}>
+      <div className="cursor-pointer text-white" onClick={() => navigate("/")}>
         LOGO
       </div>
 
