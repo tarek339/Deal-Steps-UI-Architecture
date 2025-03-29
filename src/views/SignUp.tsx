@@ -65,7 +65,7 @@ const SignUp = () => {
       });
       dispatchUser(response.data.customer);
       localStorage.setItem("token", response.data.token);
-      navigate(`/user-profile/${response.data.customer.id}`);
+      navigate(`/user-profile/${response.data.customer.id}`, { replace: true });
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         setEmailError(error.response.data.message);
