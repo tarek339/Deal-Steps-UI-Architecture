@@ -19,3 +19,12 @@ export interface ModalProps {
   description: string;
   footer: string | JSX.Element;
 }
+
+export interface PorductCardProps {
+  brand: string;
+  description: string;
+  imageUrl: string;
+  price: string;
+  addToCart: React.MouseEventHandler<HTMLButtonElement> | undefined;
+  viewDetails: React.MouseEventHandler<HTMLButtonElement> | undefined;
+}

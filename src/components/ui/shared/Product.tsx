@@ -10,13 +10,7 @@ import {
   CardTitle,
 } from "../card";
 
-export interface PorductCardProps {
-  brand: string;
-  description: string;
-  imageUrl: string;
-  price: string;
-  addToCart: React.MouseEventHandler<HTMLButtonElement> | undefined;
-}
+import { PorductCardProps } from "@/types/interfaces/components";
 
 const Product = ({
   brand,
@@ -24,6 +18,7 @@ const Product = ({
   imageUrl,
   price,
   addToCart,
+  viewDetails,
 }: PorductCardProps) => {
   return (
     <Card className="h-full w-screen max-w-sm">
@@ -38,7 +33,7 @@ const Product = ({
         <span>{price} EUR</span>
       </CardContent>
       <CardFooter className="flex w-full justify-between">
-        <Button variant={"default"}>
+        <Button onClick={viewDetails} variant={"default"}>
           <Info />
         </Button>
         <Button onClick={addToCart} variant={"success"}>

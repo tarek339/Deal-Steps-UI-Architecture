@@ -8,6 +8,7 @@ import {
   Cart,
   Home,
   NotFound,
+  ProductProfile,
   SignIn,
   SignUp,
   UserProfile,
@@ -29,6 +30,7 @@ function App() {
         <Route path="/user-profile/:id" element={<UserProfile />} />
         <Route path="/account-security/:id" element={<AccountSecurity />} />
         <Route path="/cart/:id" element={<Cart />} />
+        <Route path="/product-profile/:id" element={<ProductProfile />} />
 
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/sign-up" element={<SignUp />} />

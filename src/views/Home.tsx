@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect } from "react";
+import { useNavigate } from "react-router";
 
 import { Product } from "@/components/ui/shared";
 import useRequests from "@/hooks/useRequests";
@@ -8,6 +9,7 @@ import useSelectors from "@/hooks/useSelectors";
 const Home = () => {
   const { fetchProducts, products } = useRequests();
   const { user } = useSelectors();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchProducts();
@@ -34,6 +36,7 @@ const Home = () => {
           imageUrl={product.imageUrl}
           price={product.price}
           addToCart={() => handleClick(user?.id ?? "", product.id ?? "")}
+          viewDetails={() => navigate(`/product-profile/${product.id}`)}
         />
       ))}
     </div>
