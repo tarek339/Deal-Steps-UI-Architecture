@@ -49,6 +49,13 @@ const Home = () => {
         ))}
       </div>
       {products.length > 10 && <Button onClick={viewMore}>View More</Button>}
+      <div className="flex flex-col items-center gap-5">
+        {!products.length && (
+          <h1>
+            Currently there are no products available. Please check back later.
+          </h1>
+        )}
+      </div>
     </div>
   );
 };
