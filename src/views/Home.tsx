@@ -48,7 +48,7 @@ const Home = () => {
           />
         ))}
       </div>
-      <Button onClick={viewMore}>View More</Button>
+      {products.length > 10 && <Button onClick={viewMore}>View More</Button>}
     </div>
   );
 };
