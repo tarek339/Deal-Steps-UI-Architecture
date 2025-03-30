@@ -195,9 +195,7 @@ const Cart = () => {
       <Card className="w-full max-w-5xl p-5">
         <CardHeader className="p-0">
           <CardTitle className="flex items-center justify-between">
-            <span className="text-muted-foreground">
-              Your Cart ({data.length})
-            </span>
+            <span className="">Your Cart ({data.length})</span>
             {table.getIsAllPageRowsSelected() ||
             table.getIsSomeRowsSelected() ? (
               <Toggle className="hover:bg-red-600/10" onClick={onDelete}>
@@ -206,7 +204,7 @@ const Cart = () => {
             ) : null}
           </CardTitle>
           <CardDescription>
-            Manage your cart and checkout when you're ready.
+            <span>Manage your cart and checkout when you're ready.</span>
           </CardDescription>
         </CardHeader>
 
