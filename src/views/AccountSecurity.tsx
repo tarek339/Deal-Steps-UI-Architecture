@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { Button } from "@/components/ui/button";
@@ -14,13 +14,17 @@ import { Form, Input } from "@/components/ui/shared";
 import { Toaster } from "@/components/ui/toaster";
 import withRestrictions from "@/hoc/withRestrictions";
 import { useToast } from "@/hooks/use-toast";
+import useDispatches from "@/hooks/useDispatches";
+import useRequests from "@/hooks/useRequests";
 import useSelectors from "@/hooks/useSelectors";
 
 const AccountSecurity = () => {
   const { user } = useSelectors();
   const { id } = useParams();
   const { toast } = useToast();
+  const { existUser } = useDispatches();
   const navigate = useNavigate();
+  const { fetchUser } = useRequests();
 
   const [email, setEmail] = useState("");
   const [confirmEmail, setConfirmEmail] = useState("");
@@ -38,6 +42,7 @@ const AccountSecurity = () => {
     e.preventDefault();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     try {
+      // fetch user to check if user is logged in and his token is valid
       if (!email) {
         setEmailError("Email is required");
         return;
@@ -75,12 +80,22 @@ const AccountSecurity = () => {
       if (axios.isAxiosError(error) && error.response) {
         setEmailError(error.response.data.message);
       }
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.status === 401
+      ) {
+        existUser();
+        localStorage.removeItem("token");
+        navigate("/");
+      }
     }
   };
 
   const handleSubmitPassword = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      // fetch user to check if user is logged in and his token is valid
       if (!password) {
         setPasswordError("Password is required");
         return;
@@ -120,8 +135,21 @@ const AccountSecurity = () => {
       if (axios.isAxiosError(error) && error.response) {
         setPasswordError(error.response.data.message);
       }
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.status === 401
+      ) {
+        existUser();
+        localStorage.removeItem("token");
+        navigate("/");
+      }
     }
   };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <div className="mx-auto flex max-w-md flex-col gap-5">

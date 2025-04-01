@@ -44,27 +44,28 @@ const UserProfile = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      if (!firstName) {
+      // fetch user to check if user is logged in and his token is valid
+      if (!firstName && !user?.firstName) {
         setFirstNameError("First name is required");
         return;
       }
-      if (!lastName) {
+      if (!lastName && !user?.lastName) {
         setLastNameError("Last name is required");
         return;
       }
-      if (!city) {
+      if (!city && !user?.address.city) {
         setCityError("City is required");
         return;
       }
-      if (!houseNumber) {
+      if (!houseNumber && !user?.address.houseNumber) {
         setHouseNumberError("House number is required");
         return;
       }
-      if (!street) {
+      if (!street && !user?.address.street) {
         setStreetError("Street is required");
         return;
       }
-      if (!zipCode) {
+      if (!zipCode && !user?.address.zipCode) {
         setZipCodeError("Zip code is required");
         return;
       }
@@ -88,6 +89,15 @@ const UserProfile = () => {
         title: "Error",
         description: `Something went wrong - ${(error as Error).message}`,
       });
+      if (
+        axios.isAxiosError(error) &&
+        error.response &&
+        error.response.status === 401
+      ) {
+        existUser();
+        localStorage.removeItem("token");
+        navigate("/");
+      }
     }
   };
 

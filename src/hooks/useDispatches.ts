@@ -8,7 +8,7 @@ import { CartActionProps } from "@/types/interfaces/slices";
 const useDispatches = () => {
   const dispatch = useDispatch();
 
-  const dispatchUser = (user: UserProps) => dispatch(addUser({ ...user }));
+  const dispatchUser = (user: UserProps) => dispatch(addUser({ user }));
   const existUser = () => dispatch(removeUser());
   const dispatchCart = (cart: CartActionProps) =>
     dispatch(addCart({ ...cart }));

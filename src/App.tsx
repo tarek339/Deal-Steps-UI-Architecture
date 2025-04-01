@@ -26,13 +26,13 @@ function App() {
     <div className="flex min-h-screen flex-col justify-between">
       <div>
         <NavBar />
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user-profile/:id" element={<UserProfile />} />
           <Route path="/account-security/:id" element={<AccountSecurity />} />
           <Route path="/cart/:id" element={<Cart />} />
           <Route path="/product-profile/:id" element={<ProductProfile />} />
-
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/verify-email" element={<VerifyEmail />} />

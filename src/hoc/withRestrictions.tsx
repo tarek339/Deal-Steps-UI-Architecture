@@ -1,16 +1,15 @@
-import { ComponentType, JSX, useEffect } from "react";
+import { ComponentType, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 import useSelectors from "@/hooks/useSelectors";
 
 const withRestrictions = (Component: ComponentType) => {
-  return (props: JSX.IntrinsicAttributes) => {
+  return () => {
     const { user, userLoading } = useSelectors();
-
     const navigate = useNavigate();
 
     useEffect(() => {
-      if (!user) {
+      if (!user && !userLoading) {
         navigate("/"); // Redirect to the main page if the user is not logged in
       }
     }, [user, navigate, userLoading]);
@@ -20,7 +19,7 @@ const withRestrictions = (Component: ComponentType) => {
       return null; // Optionally, you can return a loading spinner or placeholder
     }
 
-    return <Component {...props} />;
+    return <Component />;
   };
 };
 

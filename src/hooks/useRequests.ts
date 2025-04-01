@@ -16,8 +16,10 @@ const useRequests = () => {
       const response = await axios.get(`customer/get_customer_profile`);
       dispatchUser(response.data.customer);
     } catch (error) {
+      // clear state and storage if user does not exist
       existUser();
-      console.log((error as Error).message);
+      localStorage.removeItem("token");
+      console.error((error as Error).message);
     }
   };
 
