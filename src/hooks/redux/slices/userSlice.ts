@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-import { UserProps } from "@/types/interfaces/interfaces";
-import { InitialUserState } from "@/types/interfaces/slices";
+import { InitialUserState, UserActionProps } from "@/types/interfaces/slices";
 
 const initialState: InitialUserState = {
   user: null,
@@ -12,8 +11,8 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    addUser: (state, action: PayloadAction<UserProps>) => {
-      state.user = action.payload;
+    addUser: (state, action: PayloadAction<UserActionProps>) => {
+      state.user = action.payload.user;
       state.loading = false;
     },
     removeUser: (state) => {

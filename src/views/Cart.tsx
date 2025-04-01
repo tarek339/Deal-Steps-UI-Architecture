@@ -176,7 +176,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCart(id ?? "");
-    fetchUser();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -191,6 +191,10 @@ const Cart = () => {
     }));
     setData(data);
   }, [cart]);
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <div className="flex w-full justify-center p-5">
