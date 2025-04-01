@@ -6,7 +6,7 @@ import useDispatches from "./useDispatches";
 import { ProductProps } from "@/types/interfaces/interfaces";
 
 const useRequests = () => {
-  const { dispatchUser, dispatchCart } = useDispatches();
+  const { dispatchUser, dispatchCart, existUser } = useDispatches();
 
   const [products, setProducts] = useState<ProductProps[]>([]);
 
@@ -16,6 +16,7 @@ const useRequests = () => {
       const response = await axios.get(`customer/get_customer_profile`);
       dispatchUser(response.data.customer);
     } catch (error) {
+      existUser();
       console.log((error as Error).message);
     }
   };

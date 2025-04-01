@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,7 @@ import { Toaster } from "@/components/ui/toaster";
 import withRestrictions from "@/hoc/withRestrictions";
 import { useToast } from "@/hooks/use-toast";
 import useDispatches from "@/hooks/useDispatches";
+import useRequests from "@/hooks/useRequests";
 import useSelectors from "@/hooks/useSelectors";
 
 const UserProfile = () => {
@@ -24,6 +25,7 @@ const UserProfile = () => {
   const { dispatchUser, existUser } = useDispatches();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { fetchUser } = useRequests();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -104,6 +106,10 @@ const UserProfile = () => {
       });
     }
   };
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
 
   return (
     <div className="m-auto w-full max-w-md p-5">

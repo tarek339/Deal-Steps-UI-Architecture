@@ -33,6 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Toggle } from "@/components/ui/toggle";
+import withRestrictions from "@/hoc/withRestrictions";
 import useRequests from "@/hooks/useRequests";
 import useSelectors from "@/hooks/useSelectors";
 import { CartProps } from "@/types/interfaces/interfaces";
@@ -117,7 +118,7 @@ const columns: ColumnDef<CartProps>[] = [
 ];
 
 const Cart = () => {
-  const { fetchCart } = useRequests();
+  const { fetchCart, fetchUser } = useRequests();
   const { cart } = useSelectors();
   const { id } = useParams();
 
@@ -175,6 +176,7 @@ const Cart = () => {
 
   useEffect(() => {
     fetchCart(id ?? "");
+    fetchUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -301,4 +303,5 @@ const Cart = () => {
   );
 };
 
-export default Cart;
+const RestrictedCart = withRestrictions(Cart);
+export default RestrictedCart;

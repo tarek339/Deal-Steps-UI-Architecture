@@ -10,7 +10,7 @@ const withRestrictions = (Component: ComponentType) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-      if (!user && userLoading && !localStorage.getItem("token")) {
+      if (!user) {
         navigate("/"); // Redirect to the main page if the user is not logged in
       }
     }, [user, navigate, userLoading]);
